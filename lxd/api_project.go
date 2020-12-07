@@ -351,6 +351,7 @@ func projectChange(d *Daemon, project *api.Project, req api.ProjectPut) response
 	// Update the database entry.
 	err = d.cluster.Transaction(func(tx *db.ClusterTx) error {
 		err := projecthelpers.AllowProjectUpdate(tx, project.Name, req.Config, configChanged)
+
 		if err != nil {
 			return err
 		}
@@ -525,6 +526,7 @@ func projectValidateConfig(s *state.State, config map[string]string) error {
 		"features.storage.volumes":       validate.Optional(validate.IsBool),
 		"features.networks":              validate.Optional(validate.IsBool),
 		"limits.instances":				  validate.Optional(validate.IsUint32),
+		"limits.maxpat":				  validate.Optional(validate.IsUint32),
 		"limits.containers":              validate.Optional(validate.IsUint32),
 		"limits.virtual-machines":        validate.Optional(validate.IsUint32),
 		"limits.memory":                  validate.Optional(validate.IsSize),

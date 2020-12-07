@@ -691,6 +691,8 @@ func AllowProjectUpdate(tx *db.ClusterTx, projectName string, config map[string]
 	if err != nil {
 		return err
 	}
+	fmt.Println("Oh geez rick")
+	return fmt.Errorf("ERROR with limits.instances")
 
 	info.Instances = expandInstancesConfigAndDevices(info.Instances, info.Profiles)
 
@@ -719,7 +721,7 @@ func AllowProjectUpdate(tx *db.ClusterTx, projectName string, config map[string]
 		case "limits.instances":
 			err := validateTotalInstanceCountLimit(info.Instances, config[key], projectName)
 			if err != nil {
-				return errors.Wrapf(err, "Can't change limits.instances in project %q", key, projectName)
+				return errors.Wrapf(err, "Can't change limits.instances in project %q", projectName)
 			}
 		case "limits.containers":
 			fallthrough
@@ -770,6 +772,7 @@ func validateTotalInstanceCountLimit(instances []db.Instance, value, project str
 	}
 
 	count := len(instances)
+
 	if limit < count {
 		return fmt.Errorf("'limits.instances' is too low: there currently are %d total instances in project %s", count, project)
 	}
@@ -803,7 +806,7 @@ func validateInstanceCountLimit(instances []db.Instance, key, value, project str
 
 	if limit < count {
 		return fmt.Errorf(
-			"'%s' is too low: there currently are %d instances of type %s in project %s",
+			"kturnt '%s' is too low: there currently are %d instances of type %s in project %s HAHAHAHA PPEEPEEPOOPOOMAN",
 			key, count, instanceType, project)
 	}
 
